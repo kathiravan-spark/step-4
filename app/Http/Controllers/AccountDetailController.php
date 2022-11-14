@@ -3,9 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\BankName;
-use App\Models\AccountDetail;
-use App\Models\AccountDetailDraft;
+use App\Models\BankNameModel;
+use App\Models\UserBankDetailModel;
+use App\Models\UserModel;
+use App\Models\UserNomineesModel;
 use App\Jobs\AccountStorageJob;
 use Illuminate\Support\Facades\DB;
 
@@ -13,15 +14,15 @@ use function PHPUnit\Framework\directoryExists;
 
 class AccountDetailController extends Controller
 {
-    public function __construct(BankName $bank_name,AccountDetail $account_detail,AccountDetailDraft $account_detail_drafts)
+    public function __construct(BankNameModel $bankName,UserBankDetailModel $userBankDetail,UserModel $users,UserNomineesModel $userNominees)
     {
-        $this->bank_name = $bank_name;
-        $this->account_detail=$account_detail;
-        $this->account_detail_drafts=$account_detail_drafts;
+        $this->bankName = $bankName;
+        $this->userBankDetail=$userBankDetail;
+        $this->users=$users;
     }
     public function index(){
-        $bank_name =$this->bank_name->get();
-        return view('welcome',compact('bank_name'));
+        $bankName =$this->bankName->get();
+        return view('welcome',compact('bankName'));
     }
     public function draftDetails(Request $request){
       $selected_bank= $request->selected_bank;
