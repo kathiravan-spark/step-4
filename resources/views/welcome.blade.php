@@ -44,6 +44,7 @@ $(document).ready(function(){
    
     });
 
+    var form ="<form><div class='form-group' ><label for='account_number'>Account Number</label><input type='text'style='width:70%;' pattern='[0-9]{13}'class='form-control'id='account_number'aria-describedby='emailHelp' placeholder='Enter email'></div><div class='form-group'><small id='acccountnumberHelp' class='form-text text-muted'>We'll never share your account number with anyone else.</small><label for='account_name'>Account Name</label><input style='width:70%;' type='text' class='form-control' id='account_name'placeholder='Password'></div><div><button type='submit' class='btn btn-primary'>Submit</button></form>."
 
 
 });
