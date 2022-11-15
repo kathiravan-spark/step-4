@@ -20,7 +20,7 @@ class CreateUsersTable extends Migration
             $table->string('address');
             $table->string('state');
             $table->string('postal_code');
-            $table->boolean('status')->comment('1->approved,2->rejected');
+            $table->boolean('role')->comment('0->user,1->nominee');
             $table->softDeletes();
             $table->timestamps();
         });

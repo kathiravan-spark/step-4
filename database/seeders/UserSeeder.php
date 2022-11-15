@@ -25,10 +25,11 @@ class UserSeeder extends Seeder
                 'address' => "UK",
                 'state' => 'London',
                 'postal_code' => '47626',
-                'status' => 1,
+                'role' => 1,
                 'created_at' =>now(),
                 'updated_at' =>now(),
             ]
         );
+        UserModel::factory()->count(10)->create();
     }
 }

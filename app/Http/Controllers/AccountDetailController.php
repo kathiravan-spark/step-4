@@ -10,7 +10,6 @@ use App\Models\UserNomineesModel;
 use App\Jobs\AccountStorageJob;
 use Illuminate\Support\Facades\DB;
 
-use function PHPUnit\Framework\directoryExists;
 
 class AccountDetailController extends Controller
 {
@@ -19,11 +18,65 @@ class AccountDetailController extends Controller
         $this->bankName = $bankName;
         $this->userBankDetail=$userBankDetail;
         $this->users=$users;
+        $this->userNominees=$userNominees;
     }
     public function index(){
         $bankName =$this->bankName->get();
         return view('welcome',compact('bankName'));
     }
+    public function getUser(Request $request){
+     $banks = $request->selected_bank;
+     
+     $accountType = $request->account_type;
+     foreach($banks as $bank){
+      $data=$this->userBankDetail->where(['bank_id' => $bank ,'account_type' => $accountType])->with('getUser')->first();
+      return response()->json( array('success' => true, 'user'=>$returnHTML) );
+     }
+
+     dd(3543);
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     public function draftDetails(Request $request){
       $selected_bank= $request->selected_bank;
       $bank=$this->bank_name->where('bank_name',$selected_bank)->first();
@@ -44,7 +97,7 @@ class AccountDetailController extends Controller
         'account_name'=>'rty',
         'source'=>$source,
         'account_type'=>$selected_type,
-      ]);     
+      ]);
       return view('/welcome',compact('draft'));
     }
     public function accountDetails(Request $request){

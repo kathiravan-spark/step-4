@@ -14,3 +14,4 @@ use App\Http\Controllers\AccountDetailController;
 */
 
 Route::get('/',[AccountDetailController::class,'index'])->name('index');
+Route::post('/get-user',[AccountDetailController::class,'getUser'])->name('get-user');

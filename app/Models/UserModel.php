@@ -4,12 +4,14 @@ namespace App\Models;
 
 use App\Helper\UuidModel;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\UserNomineesModel;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 
 class UserModel extends Model
 {
-    use UuidModel, SoftDeletes;
+    use UuidModel, SoftDeletes, HasFactory;
     protected $table = 'users';
     protected $fillable = [
         'name',
@@ -21,7 +23,7 @@ class UserModel extends Model
      */
      
     public function getNominee(){
-        return $this->belongsTo('App\Models\UserNominee');
+        return $this->belongsTo(UserNomineesModel::class,'id','user_id');
     }
 
  

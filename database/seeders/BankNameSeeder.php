@@ -17,7 +17,7 @@ class BankNameSeeder extends Seeder
     public function run()
     {
         BankNameModel::insert([
-            [                
+            [
                 'id' => Uuid::uuid4(),
                 'name' => 'HDFC Bank',
                 'branch'=>'COIMBATORE',
@@ -25,7 +25,7 @@ class BankNameSeeder extends Seeder
                 'created_at' =>now(),
                 'updated_at' =>now(),
             ],
-            [ 
+            [
                 'id' => Uuid::uuid4(),
                 'name' => 'Canara Bank',
                 'branch' => 'COIMBATORE',
@@ -33,7 +33,7 @@ class BankNameSeeder extends Seeder
                 'created_at' =>now(),
                 'updated_at' =>now(),
             ],
-            [ 
+            [
                 'id' => Uuid::uuid4(),
                 'name' => 'Indian Bank',
                 'branch' => 'COIMBATORE',
@@ -41,7 +41,7 @@ class BankNameSeeder extends Seeder
                 'created_at' =>now(),
                 'updated_at' =>now(),
             ],
-            [ 
+            [
                 'id' => Uuid::uuid4(),
                 'name' => 'Indian Overseas Bank',
                 'branch' => 'COIMBATORE',
@@ -49,7 +49,7 @@ class BankNameSeeder extends Seeder
                 'created_at' =>now(),
                 'updated_at' =>now(),
             ],
-            [ 
+            [
                 'id' => Uuid::uuid4(),
                 'name' => 'State Bank of India',
                 'branch' =>'COIMBATORE' ,
@@ -57,7 +57,7 @@ class BankNameSeeder extends Seeder
                 'created_at' =>now(),
                 'updated_at' =>now(),
             ],
-            [ 
+            [
                 'id' => Uuid::uuid4(),
                 'name' => 'Axis Bank',
                 'branch' => 'COIMBATORE',
@@ -65,7 +65,7 @@ class BankNameSeeder extends Seeder
                 'created_at' =>now(),
                 'updated_at' =>now(),
             ],
-            [ 
+            [
                 'id' => Uuid::uuid4(),
                 'name' => 'City Union Bank',
                 'branch' => 'COIMBATORE',
@@ -73,7 +73,7 @@ class BankNameSeeder extends Seeder
                 'created_at' =>now(),
                 'updated_at' =>now(),
             ],
-            [ 
+            [
                 'id' => Uuid::uuid4(),
                 'name' => 'Karur Vysya Bank',
                 'branch' => 'COIMBATORE',
@@ -81,7 +81,7 @@ class BankNameSeeder extends Seeder
                 'created_at' =>now(),
                 'updated_at' =>now(),
             ],
-            [ 
+            [
                 'id' => Uuid::uuid4(),
                 'name' => 'ICICI Bank',
                 'branch' => 'COIMBATORE',

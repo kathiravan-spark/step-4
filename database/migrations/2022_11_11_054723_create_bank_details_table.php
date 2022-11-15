@@ -19,8 +19,9 @@ class CreateBankDetailsTable extends Migration
             $table->foreign('bank_id')->references('id')->on('bank_names')->onDelete('cascade');
             $table->uuid('user_id');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->string('account_number')->unique();
+            $table->string('account_name');
             $table->integer('account_type')->comment('1->saving,2->credit,3->current');
-            $table->boolean('account_status')->comment('1->user,2->nominee')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });
