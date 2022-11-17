@@ -26,14 +26,29 @@ class AccountDetailController extends Controller
     }
     public function getUser(Request $request){
      $banks = $request->selected_bank;
-     
+
      $accountType = $request->account_type;
      foreach($banks as $bank){
       $data=$this->userBankDetail->where(['bank_id' => $bank ,'account_type' => $accountType])->with('getUser')->first();
-      return response()->json( array('success' => true, 'user'=>$returnHTML) );
+      return response()->json(array('success' => true,'result'=>$data));
      }
+    }
+    public function getResult(Request $request)
+    {
+      $value = $request->value;
+      $accountName = $request->account_name;
+      if($value == 1){
+        $userbankDetail = $this->userBankDetail->where('account_name',$accountName)->first();
+        $userNominees = $this->userNominees->where('user_id',$userbankDetail->user_id)->with('getUser','getNominee')->first();
+       
+       $user = $nominee=[];
+       $user = $userNominees->getUser->toArray();
+       $nominee = $userNominees->getNominee->toArray();
+       $data =  array_combine($user,$nominee);
 
-     dd(3543);
+        return response()->json(array('success' => true,'result'=>$data));
+      }
+
     }
 
 

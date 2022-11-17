@@ -18,13 +18,18 @@ class UserNomineesSeeder extends Seeder
         
         $nomineeId = $userId =[];
         $users = UserModel::get();
+        
         foreach($users as $user){
+          
             $userRole = $user->role;
             if($userRole == 0){
+               
                 $userId[] = $user->id;
             }else{
+                
                 $nomineeId[] = $user->id;
             }
+            
             UserNomineesModel::firstOrCreate(
                 [
                     'user_id'=> $userId,

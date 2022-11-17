@@ -16,19 +16,18 @@ class UserNomineesModelFactory extends Factory
      */
     public function definition()
     {
-        $userId = UserModel::pluck('id');
-        foreach($userId as $user) {
+        dd(4646);
+        $userIds = UserModel::pluck('id');
+        
+        foreach($userIds as $userId) {
+           
         $data[] =  [
-                'user_id'=>$user,
-                'email' => $this->faker->unique()->safeEmail(),
-                'name' => $this->faker->name(),
-                'address' => $this->faker->country(),
-                'state' => $this->faker->state(),
-                'postal_code' =>$this->faker->postcode(),
+                'user_id'=>$userId,
+                'nominee_to' =>$userId,
                 'nominee_type' => $this->faker->numberBetween(1,2,3,4,5),
             ];
         }
-        
+        dd($data);
         return ksort($data);
     }
 }

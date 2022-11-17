@@ -23,6 +23,9 @@ class UserModel extends Model
      */
      
     public function getNominee(){
+        return $this->belongsTo(UserNomineesModel::class,'id','nominee_to');
+    }
+    public function getUser(){
         return $this->belongsTo(UserNomineesModel::class,'id','user_id');
     }
 

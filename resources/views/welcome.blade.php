@@ -25,13 +25,38 @@
         <div class ="dynamic-field m-3"></div>
         <div class ="dynamic-form m-3"></div>
     </div>
+    
+        
+                 
+                    
+                        
+                         
+                        
+                        
+                            
+                        
+                    
+                
+                 
+                    
+                        
+                         
+                        
+                        
+                            
+                        
+                    
+                
+        
+      
+
 <script>
 $(document).ready(function(){
 
- $(".bank-select-multi").select2({
-    tags:true,
-    placeholder:'Select the Bank'
- });
+    $(".bank-select-multi").select2({
+        tags:true,
+        placeholder:'Select the Bank'
+    });
 
     $(document).on('change', '#bank', function(ev) {
         var type="<select class='form-control type' id='account-type' name='account_type' style='width:50%;'><option></option><option value='1'>Saving</option><option value='2'>Credit</option><option value='3'>Current</option></select>"
@@ -46,32 +71,74 @@ $(document).ready(function(){
     $(document).on('change', '#account-type', function(ev) {
 
         var selected_bank =$('#bank option:selected').toArray().map(item => item.value);
-        alert(selected_bank);
+        console.log(selected_bank);
         var account_type = $('#account-type option:selected').val();
-        alert(account_type);
-      
+        console.log(account_type);
+    
         $.ajaxSetup({
-        headers: {
-            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-        }
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
         });
-            $.ajax({
-                url: "get-user/",
-                type: 'POST',
-                data: {
-                    selected_bank:selected_bank,
-                    account_type:account_type,
-                },
+        $.ajax({
+            url: "get-user/",
+            type: 'POST',
+            data: {
+                selected_bank:selected_bank,
+                account_type:account_type,
+            },
             success: function (data) {
-              
+                console.log(data);
+                if(data['result']!=null){
+                var account_number = data['result']['account_number'];
+                var account_name = data['result']['account_name'];
+                var form ="<div class='flex'><label for='account_number'>Account Number</label><input type='text'style='width:20%;class='form-control' value='"+account_number+"'id='account_number'>&nbsp&nbsp<input type='radio'name='options' value='1'id='transfer'>&nbsp<label for='transfer'>Transfer Account</label>&nbsp&nbsp<input type='radio' value='2' name='options'id='close'>&nbsp<label for='close'>Close Account</label><input type='hidden' value='"+account_name+"'id='account_name'><div class='result'></div></div>"
+                }
+                else{
+                    var account_number = '';
+                    var form ="<form method='post' action=''><div class='form-group'><label for='account_number'>Account Number</label><input type='text'style='width:70%;' pattern='[0-9]{13}'class='form-control' 'id='account_number'placeholder='Enter account number'></div><div class='form-group'><small id='acccountnumberHelp' class='form-text text-muted'>We'll never share your account number with anyone else.</small><label for='account_name'>Account Name</label><input style='width:70%;'type='text' class='form-control'  id='account_name'placeholder='Password'></div><div><button type='submit' class='btn btn-primary'>Submit</button></form>."
+                }
+                console.log(account_number)
+    
+                $(".dynamic-form").append(form);
             },
             error: function (data) {
                 alert('error')
             }
-        });
-        var form ="<form><div class='form-group' ><label for='account_number'>Account Number</label><input type='text'style='width:70%;' pattern='[0-9]{13}'class='form-control'id='account_number'aria-describedby='emailHelp' placeholder='Enter email'></div><div class='form-group'><small id='acccountnumberHelp' class='form-text text-muted'>We'll never share your account number with anyone else.</small><label for='account_name'>Account Name</label><input style='width:70%;' type='text' class='form-control' id='account_name'placeholder='Password'></div><div><button type='submit' class='btn btn-primary'>Submit</button></form>."
 
-        $(".dynamic-form").append(form);
+        });
+    
+    });
+
+    $(document).on("click","#transfer",function() {
+      var value= $('#transfer').val();
+      var account_name = $("#account_name").val();
+      console.log(value);
+      console.log(account_name);
+      $.ajax({
+        url: "get-result/",
+        type: 'POST',
+        data: {value:value,
+            account_name:account_name},
+        success: function (data) {
+            console.log(data);
+            var result = data['result'];
+            console.log(result);
+            // var nominee = result.keys();
+            
+
+             var result = "<div class='container'><div class='row  border'><div class='col-lg-6 my-3'><div class='card'><div class='card-header'><h5 class='card-title'>Current Account Holder</h5></div><div class='card-body'><h6 class='card-subtitle mb-2 text-muted'>Card subtitle</h6></div></div></div><div class='col-lg-6 my-3'><div class='card'><div class='card-header'><h5 class='card-title'>New Account Holder</h5></div><div class='card-body'><h6 class='card-subtitle mb-2 text-muted'>Card subtitle</h6></div></div></div></div></div></div>"
+        },
+        error: function (data) {
+            alert('error')
+        }
+
+    });
+
+    });
+        
+    $(document).on("click","#close",function() {
+       alert('Closed')
     });
 });
 
