@@ -24,48 +24,43 @@
     <div class="m-3">
         <div class ="dynamic-field m-3"></div>
         <div class ="dynamic-form m-3"></div>
+        <div class = "final-result m-3"></div>
     </div>
     
-        
-                 
-                    
-                        
-                         
-                        
-                        
-                            
-                        
-                    
-                
-                 
-                    
-                        
-                         
-                        
-                        
-                            
-                        
-                    
-                
-        
-      
-
 <script>
 $(document).ready(function(){
 
-    $(".bank-select-multi").select2({
-        tags:true,
-        placeholder:'Select the Bank'
-    });
-
+    $(".bank-select-multi").select2();
     $(document).on('change', '#bank', function(ev) {
-        var type="<select class='form-control type' id='account-type' name='account_type' style='width:50%;'><option></option><option value='1'>Saving</option><option value='2'>Credit</option><option value='3'>Current</option></select>"
-        $(".dynamic-field").append(type);
-            $("select.type").select2({
-                tags:true,
-                placeholder:'Select the Bank',
-            });
+        let selected_bank = '';
+         selected_bank = $(this).val();
+         let currentBankId =selected_bank[selected_bank.length - 1];
+
+       
+        var type="<div class='bank-id' id='"+currentBankId+"' ><select class='form-control type'id='account-type' name='account_type' style='width:50%;'><option></option><option value='1'>Saving</option><option value='2'>Credit</option><option value='3'>Current</option></select></div><br>";
+ 
+        if($("#"+currentBankId).length == 0){
+            $(".dynamic-field").append(type);
+        }
+        if(selected_bank == ''){
+            $(".dynamic-field").empty();
+        }
     });
+    $(document).on('click','.select2-selection__choice__remove',function(){
+        alert()
+        var a = $(this).attr('aria-describedby');
+        console.log(a)
+        let arr = a.split('-');
+        let id = arr[5]+'-'+arr[6]+'-'+arr[7]+'-'+arr[8]+'-'+arr[9];
+        alert(id);
+        $('#'+id).empty();
+    })
+    function check(){
+        var dd = $('.bank-id').attr('value');
+        console.log(dd);
+    }
+        
+    
 
 
     $(document).on('change', '#account-type', function(ev) {
@@ -74,6 +69,7 @@ $(document).ready(function(){
         console.log(selected_bank);
         var account_type = $('#account-type option:selected').val();
         console.log(account_type);
+       
     
         $.ajaxSetup({
             headers: {
@@ -96,7 +92,7 @@ $(document).ready(function(){
                 }
                 else{
                     var account_number = '';
-                    var form ="<form method='post' action=''><div class='form-group'><label for='account_number'>Account Number</label><input type='text'style='width:70%;' pattern='[0-9]{13}'class='form-control' 'id='account_number'placeholder='Enter account number'></div><div class='form-group'><small id='acccountnumberHelp' class='form-text text-muted'>We'll never share your account number with anyone else.</small><label for='account_name'>Account Name</label><input style='width:70%;'type='text' class='form-control'  id='account_name'placeholder='Password'></div><div><button type='submit' class='btn btn-primary'>Submit</button></form>."
+                    var form ="<form method='post' action=''><div class='form-group'><label for='account_number'>Account Number</label><input type='text'style='width:70%;' pattern='[0-9]{13}'class='form-control' 'id='account_number'placeholder='Enter account number'></div><div class='form-group'><small id='acccountnumberHelp' class='form-text text-muted'>We'll never share your account number with anyone else.</small><label for='account_name'>Account Name</label><input style='width:70%;'type='text' class='form-control'  id='account_name'placeholder='Password'></div><div><button type='submit' class='btn btn-primary'>Submit</button>&nbsp&nbsp<button type='submit' class='btn btn-danger' id='remove'>Close</button></div></form>."
                 }
                 console.log(account_number)
     
@@ -105,12 +101,17 @@ $(document).ready(function(){
             error: function (data) {
                 alert('error')
             }
+            
 
         });
+        $(document).on("click","#remove",function() {
+                alert(error)
+            });
     
     });
 
     $(document).on("click","#transfer",function() {
+        $(".final-result").empty();
       var value= $('#transfer').val();
       var account_name = $("#account_name").val();
       console.log(value);
@@ -121,26 +122,65 @@ $(document).ready(function(){
         data: {value:value,
             account_name:account_name},
         success: function (data) {
-            console.log(data);
             var result = data['result'];
             console.log(result);
-            // var nominee = result.keys();
-            
+            var user = Object.keys(result);
+            var nominee = Object.values(result);
+            var user_name = user['3'];
+            var user_email = user['4'];
+            var user_address = user['5'];
+            var user_state= user['6'];
+            var user_postal_code = user['1'];
+            var nominee_name = nominee['3'];
+            var nominee_email = nominee['4'];
+            var nominee_address = nominee['5'];
+            var nominee_state= nominee['6'];
+            var nominee_postal_code = nominee['1'];
 
-             var result = "<div class='container'><div class='row  border'><div class='col-lg-6 my-3'><div class='card'><div class='card-header'><h5 class='card-title'>Current Account Holder</h5></div><div class='card-body'><h6 class='card-subtitle mb-2 text-muted'>Card subtitle</h6></div></div></div><div class='col-lg-6 my-3'><div class='card'><div class='card-header'><h5 class='card-title'>New Account Holder</h5></div><div class='card-body'><h6 class='card-subtitle mb-2 text-muted'>Card subtitle</h6></div></div></div></div></div></div>"
+             var result = "<div class='container'><div class='row  border'><div class='col-lg-6 my-3'><div class='card'><div class='card-header'><h5 class='card-title'>Current Account Holder</h5></div><div class='card-body'><h6 class='card-subtitle mb-2 text-muted'>"+user_name+",</h6><p>"+user_email+",<br>"+user_address+",<br>"+user_state+" - "+user_postal_code+"</p></div></div></div><div class='col-lg-6 my-3'><div class='card'><div class='card-header'><h5 class='card-title'>New Account Holder</h5></div><div class='card-body'><h6 class='card-subtitle mb-2 text-muted'>"+nominee_name+",</h6><p>"+nominee_email+",<br>"+nominee_address+",<br>"+nominee_state+" - "+nominee_postal_code+".</p></div></div></div></div></div></div>";
+
+             $(".final-result").append(result);
         },
         error: function (data) {
             alert('error')
         }
-
     });
 
     });
         
     $(document).on("click","#close",function() {
-       alert('Closed')
+        $(".final-result").empty();
+        var value= $('#close').val();
+        var account_name = $("#account_name").val();
+        console.log(value);
+        console.log(account_name);
+        $.ajax({
+            url: "get-result/",
+            type: 'POST',
+            data: {value:value,
+                account_name:account_name},
+            success: function (data) {
+                var user = data['result'];
+                console.log(result);
+                var user_name = user['name'];
+                var user_email = user['email'];
+                var user_address = user['address'];
+                var user_state = user['state'];
+                var user_postal_code = user['postal_code'];
+
+                var result ="<div class='container'><div class='row'><div class='col-lg-6 m-3'><div class='card'><div class='card-header'><h5 class='card-title'>Current Account Holder</h5></div><div class='card-body'><h6 class='card-subtitle mb-2 text-muted'>"+user_name+"</h6><p>"+user_email+",<br>"+user_address+",<br>"+user_state+"-"+user_postal_code+",<br></p></div></div></div></div></div>";
+                 $(".final-result").append(result);
+            },
+            error: function (data) {
+                alert('error')
+            }
+        });
+
     });
 });
+
+
+
 
 
 

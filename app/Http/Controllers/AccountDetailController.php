@@ -37,16 +37,21 @@ class AccountDetailController extends Controller
     {
       $value = $request->value;
       $accountName = $request->account_name;
+
+      $userbankDetail = $this->userBankDetail->where('account_name',$accountName)->with('getUser')->first();
+      $userNominees = $this->userNominees->where('user_id',$userbankDetail->user_id)->with('getUser','getNominee')->first();
       if($value == 1){
-        $userbankDetail = $this->userBankDetail->where('account_name',$accountName)->first();
-        $userNominees = $this->userNominees->where('user_id',$userbankDetail->user_id)->with('getUser','getNominee')->first();
-       
        $user = $nominee=[];
        $user = $userNominees->getUser->toArray();
+       array_splice($user, count($user) - 3,3);
        $nominee = $userNominees->getNominee->toArray();
+       array_splice($nominee, count($nominee) - 3,3);
        $data =  array_combine($user,$nominee);
-
         return response()->json(array('success' => true,'result'=>$data));
+      }else {
+        $data = $userNominees->getUser->toArray();
+        return response()->json(array('success' => true,'result'=>$data));
+
       }
 
     }
