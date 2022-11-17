@@ -54,13 +54,11 @@ $(document).ready(function(){
         let id = arr[5]+'-'+arr[6]+'-'+arr[7]+'-'+arr[8]+'-'+arr[9];
         alert(id);
         $('#'+id).empty();
-    })
-    function check(){
-        var dd = $('.bank-id').attr('value');
-        console.log(dd);
-    }
+        $(".dynamic-form").empty();
+        $(".final-result").empty();
         
-    
+
+    })
 
 
     $(document).on('change', '#account-type', function(ev) {
@@ -95,7 +93,7 @@ $(document).ready(function(){
                     var form ="<form method='post' action=''><div class='form-group'><label for='account_number'>Account Number</label><input type='text'style='width:70%;' pattern='[0-9]{13}'class='form-control' 'id='account_number'placeholder='Enter account number'></div><div class='form-group'><small id='acccountnumberHelp' class='form-text text-muted'>We'll never share your account number with anyone else.</small><label for='account_name'>Account Name</label><input style='width:70%;'type='text' class='form-control'  id='account_name'placeholder='Password'></div><div><button type='submit' class='btn btn-primary'>Submit</button>&nbsp&nbsp<button type='submit' class='btn btn-danger' id='remove'>Close</button></div></form>."
                 }
                 console.log(account_number)
-    
+                
                 $(".dynamic-form").append(form);
             },
             error: function (data) {
