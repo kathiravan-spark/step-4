@@ -56,28 +56,33 @@ class AccountDetailController extends Controller
     }
 
     public function addAccount(Request $request){
-      dd($request->all());
-      $selected_bank= $request->selected_bank;
-      $bank=$this->bank_name->where('bank_name',$selected_bank)->first();
-      $bank_id= $bank->id;
-      $account_number=$request->account_number;
-      $confirmation_account_number=$request->confirmation_account_number;
-      $source=$request->saving_account;
-      $selected_type=$request->selected_type;
 
-      $draft=$this->account_detail_drafts->create([
-        
-        'user_id'=>'1',
-        'bank_id'=> $bank_id,
-        'bank_short_name'=>$bank->bank_short_name,
-        'account_number'=>$account_number,
-        'confirmation_account_number'=>$confirmation_account_number,
-        'bank_branch'=>'rty',
-        'account_name'=>'rty',
-        'source'=>$source,
-        'account_type'=>$selected_type,
+       $request->validate([
+        'account_number' => 'required|unique:bank_details,account_number|max:13',
+        'account_name' => 'required|',
       ]);
-      return view('/welcome',compact('draft'));
+ 
+      $selectedBank  = $request->bank_id;
+      $accountNumber = $request->account_number;
+      $accountName = $request->account_name;
+      $userId = $this->users->where('name',$accountName)->select('id')->first();
+      // dd($user_id);
+      if($userId == null){
+        $this->users->create([
+          'name' => $accountName,
+        ]);
+       
+      }
+        $userId = $userId['id'];
+      $selectedType = $request->account_type;
+      $this->userBankDetail->create([
+          'user_id'=>$userId,
+          'bank_id'=> $selectedBank,
+          'account_number'=>$accountNumber,
+          'account_name'=>$accountName,
+          'account_type'=>$selectedType,
+        ]);
+      return redirect('/')->with('successfully added');
     }
     public function accountDetails(Request $request){
       
