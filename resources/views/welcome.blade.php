@@ -13,8 +13,23 @@
     <title>Step-4</title>
 <body>
 
-    <div class="m-3">
-        <label for="bankname" class="form-label">Search Bank Name</label>
+            <!-- header -->
+<nav class="navbar navbar-expand-lg  navbar-light bg-light">
+    <a class="navbar-brand" href="#">
+        <img src="{{asset('asset/brand/logo.png')}}" width="200" height="50" class="d-inline-block align-top" alt="logo">
+    </a>
+    <div class="collapse navbar-collapse" id="navbarNavDropdown">
+        <ul class="navbar-nav">
+            <li class="nav-item active">
+                <h4 class="nav-link" href="#">Step-4</h4>
+            </li>
+        </ul>
+    </div>
+</nav>
+            <!-- body -->
+<div class="flex p-2 bg-dark">
+    <div class="">
+        <label for="bankname" class="form-label text-white">Search Bank Name</label>
             <select class="bank-select-multi" id="bank" multiple="multiple" name="bank[]" style="width:70%;">
                 @foreach($bankName as $bankList)
                     <option value="{{$bankList->id}}">{{$bankList->name}}</option>
@@ -26,7 +41,7 @@
         <div class ="dynamic-form m-3"></div>
         <div class = "final-result m-3"></div>
     </div>
-    
+</div>
 <script>
 $(document).ready(function(){
 
@@ -47,17 +62,14 @@ $(document).ready(function(){
         }
     });
     $(document).on('click','.select2-selection__choice__remove',function(){
-        alert()
+
         var a = $(this).attr('aria-describedby');
         console.log(a)
         let arr = a.split('-');
-        let id = arr[5]+'-'+arr[6]+'-'+arr[7]+'-'+arr[8]+'-'+arr[9];
-        alert(id);
+        let id = arr[5]+'-'+arr[6]+'-'+arr[7]+'-'+arr[8]+'-'+arr[9];     
         $('#'+id).empty();
         $(".dynamic-form").empty();
         $(".final-result").empty();
-        
-
     })
 
 
@@ -68,7 +80,6 @@ $(document).ready(function(){
         var account_type = $('#account-type option:selected').val();
         console.log(account_type);
        
-    
         $.ajaxSetup({
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -77,6 +88,7 @@ $(document).ready(function(){
         $.ajax({
             url: "get-user/",
             type: 'POST',
+            _token : "{{ csrf_token() }}",
             data: {
                 selected_bank:selected_bank,
                 account_type:account_type,
@@ -86,24 +98,22 @@ $(document).ready(function(){
                 if(data['result']!=null){
                 var account_number = data['result']['account_number'];
                 var account_name = data['result']['account_name'];
-                var form ="<div class='flex'><label for='account_number'>Account Number</label><input type='text'style='width:20%;class='form-control' value='"+account_number+"'id='account_number'>&nbsp&nbsp<input type='radio'name='options' value='1'id='transfer'>&nbsp<label for='transfer'>Transfer Account</label>&nbsp&nbsp<input type='radio' value='2' name='options'id='close'>&nbsp<label for='close'>Close Account</label><input type='hidden' value='"+account_name+"'id='account_name'><div class='result'></div></div>"
+                var form ="<div class='flex text-white'><label text-white for='account_number'>Account Number</label><input type='text'style='width:20%;class='form-control' value='"+account_number+"' readonly id='account_number'>&nbsp&nbsp<input type='radio'name='options' value='1'id='transfer'>&nbsp<label for='transfer'>Transfer Account</label>&nbsp&nbsp<input type='radio' value='2' name='options'id='close'>&nbsp<label for='close'>Close Account</label><input type='hidden' value='"+account_name+"'id='account_name'><div class='result'></div></div>";
                 }
                 else{
-                    var account_number = '';
-                    var form ="<form method='post' action=''><div class='form-group'><label for='account_number'>Account Number</label><input type='text'style='width:70%;' pattern='[0-9]{13}'class='form-control' 'id='account_number'placeholder='Enter account number'></div><div class='form-group'><small id='acccountnumberHelp' class='form-text text-muted'>We'll never share your account number with anyone else.</small><label for='account_name'>Account Name</label><input style='width:70%;'type='text' class='form-control'  id='account_name'placeholder='Password'></div><div><button type='submit' class='btn btn-primary'>Submit</button>&nbsp&nbsp<button type='submit' class='btn btn-danger' id='remove'>Close</button></div></form>."
+                    var account_number = ''; 
+                    var csrf_token = "{{ csrf_token() }}";
+                    var form ="<form method='post' action='{{route('add-account')}}'><input name='_token' value='"+csrf_token+"' type='hidden'><div class='form-group text-white'><label for='account_number'>Account Number</label><input type='number'style='width:70%;'required class='form-control' 'id='account_number'placeholder='Enter account number'></div><div class='form-group'><small id='acccountnumberHelp' class='form-text text-muted'>We'll never share your account number with anyone else.</small><label class='text-white' for='account_name'>Account Name</label><input required style='width:70%;'type='text' class='form-control'  id='account_name'placeholder='Account Name'></div><div><button type='submit' class='btn btn-primary'>Submit</button>&nbsp&nbsp<button class='btn btn-danger' id='remove'>Close</button></div></form>.";
                 }
                 console.log(account_number)
-                
                 $(".dynamic-form").append(form);
             },
             error: function (data) {
                 alert('error')
             }
-            
-
         });
         $(document).on("click","#remove",function() {
-                alert(error)
+            $(".dynamic-form").empty();
             });
     
     });

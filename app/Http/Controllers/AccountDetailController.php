@@ -53,51 +53,10 @@ class AccountDetailController extends Controller
         return response()->json(array('success' => true,'result'=>$data));
 
       }
-
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    public function draftDetails(Request $request){
+    public function addAccount(Request $request){
+      dd($request->all());
       $selected_bank= $request->selected_bank;
       $bank=$this->bank_name->where('bank_name',$selected_bank)->first();
       $bank_id= $bank->id;
